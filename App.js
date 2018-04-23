@@ -14,9 +14,15 @@ import {
 } from 'react-native'
 import { DatePicker } from './library'
 import { PopupStub } from '@unpourtous/react-native-popup-stub'
+import moment from 'moment'
 
 type Props = {};
 export default class App extends Component<Props> {
+  constructor () {
+    super(...arguments)
+    this.state = {}
+  }
+
   componentDidMount () {
   }
 
@@ -25,11 +31,18 @@ export default class App extends Component<Props> {
       <View style={styles.container}>
         {/*<DatePicker minYear={2000} maxYear={2019} />*/}
 
+        <Text>已选择日期：{this.state.date || ''}</Text>
         <Button
+          style={{
+            marginTop: 8
+          }}
           onPress={() => {
             DatePicker.show({
               minYear: 2000,
-              maxYear: 2019
+              maxYear: 2019,
+              onComplete: (date) => {
+                this.setState({date: moment(date).format('YYYY-MM-DD')})
+              }
             })
           }}
           title="选择日期" />

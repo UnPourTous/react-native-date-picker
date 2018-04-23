@@ -12,6 +12,6 @@
     "moment": "^2.22.1",
     "react": "16.3.1",
     "react-native": "^0.55.3",
-    "react-native-wheel-picker": "git+https://github.com/UnPourTous/react-native-wheel-picker.git#v1.0.2"
+    "react-native-wheel-picker": "git+https://github.com/UnPourTous/react-native-wheel-picker.git#v1.1.3"
   }
 }
