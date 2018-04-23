@@ -18,7 +18,6 @@ import {
 } from 'react-native'
 import { PopupStub } from '@unpourtous/react-native-popup-stub'
 import Picker from 'react-native-wheel-picker'
-// import { ProUI } from 'apps/webankPro/values'
 
 const longTimeYear = 9999
 
