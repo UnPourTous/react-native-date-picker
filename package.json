@@ -1,0 +1,17 @@
+{
+  "name": "react-native-date-picker",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node_modules/react-native/packager/packager.sh"
+  },
+  "main": "library/index.js",
+  "dependencies": {
+    "@unpourtous/react-native-popup-stub": "^1.4.2",
+    "lodash": "latest",
+    "moment": "^2.22.1",
+    "react": "16.3.1",
+    "react-native": "^0.55.3",
+    "react-native-wheel-picker": "git+https://github.com/UnPourTous/react-native-wheel-picker.git#v1.0.2"
+  }
+}
