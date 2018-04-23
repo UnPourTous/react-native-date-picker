@@ -14,10 +14,12 @@ import {
   Text,
   View,
   Platform,
-  Keyboard
+  Keyboard,
+  PixelRatio
 } from 'react-native'
 import { PopupStub } from '@unpourtous/react-native-popup-stub'
 import Picker from 'react-native-wheel-picker'
+import WeTouchable from './touchable/WeTouchable'
 
 const longTimeYear = 9999
 
@@ -180,50 +182,52 @@ export default class DatePicker extends Component {
       <View style={{
         alignSelf: 'stretch',
         flexDirection: 'column',
-        // backgroundColor: ProUI.color.moduleBackground
+        backgroundColor: '#FFFFFF',
+        height: 250
       }}>
-        {/*<View style={{*/}
-        {/*flexDirection: 'row',*/}
-        {/*// height: ProUI.fixedRowHeight,*/}
-        {/*// backgroundColor: ProUI.color.moduleBackground,*/}
-        {/*alignItems: 'center',*/}
-        {/*// paddingHorizontal: ProUI.spaceX.large,*/}
-        {/*// borderBottomWidth: ProUI.realOnePixel,*/}
-        {/*// borderColor: ProUI.color.border*/}
-        {/*}}>*/}
-        {/*<WeTouchable onPress={() => {*/}
-        {/*DatePicker.hide()*/}
-        {/*}}><Text style={{*/}
-        {/*// fontSize: ProUI.fontSize.large,*/}
-        {/*// color: ProUI.color.sub*/}
-        {/*}}>{'取消'}</Text>*/}
-        {/*</WeTouchable>*/}
-        {/*<View style={{flex: 1}} />*/}
-        {/*<WeTouchable onPress={() => {*/}
-        {/*DatePicker.hide()*/}
-        {/*this.props.onSelectDate && this.props.onSelectDate({*/}
-        {/*year: this.state.year,*/}
-        {/*month: this.state.month,*/}
-        {/*date: this.state.date*/}
-        {/*})*/}
-        {/*this.props.onSelectMonth && this.props.onSelectMonth({*/}
-        {/*year: this.state.year,*/}
-        {/*month: this.state.month*/}
-        {/*})*/}
-        {/*this.props.onSelectYear && this.props.onSelectYear({*/}
-        {/*year: this.state.year*/}
-        {/*})*/}
-        {/*_.isFunction(onComplete) && onComplete(new Date(year, month - 1, date))*/}
-        {/*}} hitSlop={{top: 10, left: 20, bottom: 10, right: 20}}*/}
-        {/*><Text style={{*/}
-        {/*// fontSize: ProUI.fontSize.large,*/}
-        {/*// color: ProUI.color.link*/}
-        {/*}}>{'确定'}</Text></WeTouchable>*/}
-        {/*</View>*/}
+        <View style={{
+          flexDirection: 'row',
+          height: 44,
+          backgroundColor: '#FFF',
+          alignItems: 'center',
+          paddingHorizontal: 10,
+          borderBottomWidth: 1 / PixelRatio.get(),
+          borderColor: '#E5E5E5'
+        }}>
+          <WeTouchable onPress={() => {
+            DatePicker.hide()
+          }}><Text style={{
+            fontSize: 16,
+            color: '#000000'
+          }}>{'取消'}</Text>
+          </WeTouchable>
+          <View style={{flex: 1}} />
+          <WeTouchable onPress={() => {
+            DatePicker.hide()
+            this.props.onSelectDate && this.props.onSelectDate({
+              year: this.state.year,
+              month: this.state.month,
+              date: this.state.date
+            })
+            this.props.onSelectMonth && this.props.onSelectMonth({
+              year: this.state.year,
+              month: this.state.month
+            })
+            this.props.onSelectYear && this.props.onSelectYear({
+              year: this.state.year
+            })
+            _.isFunction(onComplete) && onComplete(new Date(year, month - 1, date))
+          }} hitSlop={{top: 10, left: 20, bottom: 10, right: 20}}
+          ><Text style={{
+            fontSize: 16,
+            color: '#000000'
+          }}>{'确定'}</Text>
+          </WeTouchable>
+        </View>
         <View style={{
           alignSelf: 'stretch',
           flexDirection: 'row',
-          // backgroundColor: ProUI.color.moduleBackground
+          backgroundColor: '#FFFFFF'
         }}>
           { this._renderYear() }
           { this._renderMonth() }
@@ -235,23 +239,18 @@ export default class DatePicker extends Component {
 
   _renderYear = () => {
     return (
-      <Picker
-        style={styles.pickerStyle}
-        itemStyle={{
-          // fontSize: ProUI.fontSize.medium,
-          // color: ProUI.color.link
-        }}
-        indicatorStyle={{color: '#e5e5e5'}}
-        selectedValue={this.state.year}
-        onValueChange={(year) => this.handleYearChange(year)}>
+      <InnerPicker selectedValue={this.state.year} onValueChange={(year) => this.handleYearChange(year)}>
         {
           this.state.yearList.map(year => {
             return (
-              <Picker.Item key={year} label={year === longTimeYear ? `长期` : `${year}年`} value={year} />
+              <Picker.Item
+                key={year}
+                label={year === longTimeYear ? `长期` : `${year}年`}
+                value={year} />
             )
           })
         }
-      </Picker>
+      </InnerPicker>
     )
   }
 
@@ -263,20 +262,14 @@ export default class DatePicker extends Component {
       monthes = this.state.minMonthList
     }
     return (
-      <Picker
-        style={styles.pickerStyle}
-        itemStyle={{
-          // fontSize: ProUI.fontSize.medium,
-          // color: ProUI.color.link
-        }}
-        indicatorStyle={{color: '#e5e5e5'}}
-        selectedValue={this.state.month}
-        onValueChange={(month) => this.handleMonthChange(month)}>
+      <InnerPicker selectedValue={this.state.month} onValueChange={(month) => this.handleMonthChange(month)}>
         {
-          monthes.map(month => <Picker.Item key={month} label={this.state.year === longTimeYear ? `` : `${month}月`}
-                                            value={this.state.year === longTimeYear ? 11 : month} />)
+          monthes.map(month => <Picker.Item
+            key={month}
+            label={this.state.year === longTimeYear ? `` : `${month}月`}
+            value={this.state.year === longTimeYear ? 11 : month} />)
         }
-      </Picker>
+      </InnerPicker>
     )
   }
 
@@ -290,31 +283,46 @@ export default class DatePicker extends Component {
       dates = this.getDateList(this.state.year, this.state.month)
     }
     return (
-      <Picker
-        style={styles.pickerStyle}
-        itemStyle={{
-          // fontSize: ProUI.fontSize.medium,
-          // color: ProUI.color.link
-        }}
-        indicatorStyle={{color: '#e5e5e5'}}
-        selectedValue={this.state.date}
-        onValueChange={(date) => { this.setState({date}) }}>
+      <InnerPicker selectedValue={this.state.date} onValueChange={(date) => { this.setState({date}) }}>
         {
-          dates.map(date => <Picker.Item key={date + 1} label={this.state.year === longTimeYear ? `` : `${date + 1}日`}
-                                         value={this.state.year === longTimeYear ? 31 : date + 1} />)
+          dates.map(date => <Picker.Item
+            key={date + 1}
+            label={this.state.year === longTimeYear ? `` : `${date + 1}日`}
+            value={this.state.year === longTimeYear ? 31 : date + 1} />)
         }
-      </Picker>
+      </InnerPicker>
     )
   }
 }
 
+class InnerPicker extends Component {
+  static propTypes = {
+    onValueChange: PropTypes.func,
+    selectedValue: PropTypes.string
+  }
+
+  render () {
+    return <Picker
+      style={styles.pickerStyle}
+      itemStyle={styles.pickerTextStyle}
+      indicatorStyle={{color: '#e5e5e5'}}
+      selectedValue={this.props.selectedValue}
+      onValueChange={this.props.onValueChange}>
+      {this.props.children}
+    </Picker>
+  }
+}
+
 const styles = StyleSheet.create({
+  pickerTextStyle: {
+    fontSize: 14,
+    color: '#000000'
+  },
   pickerStyle: {
     ...Platform.select({
       android: {
         height: 200,
-        backgroundColor: '#000000',
-        opacity: 0.5
+        backgroundColor: '#FFFFFF',
       }
     }),
     flex: 1
