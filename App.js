@@ -10,13 +10,17 @@ import {
   Platform,
   StyleSheet,
   Text,
-  View
+  View,
+  WebView,
+  Dimensions,
+  ScrollView
 } from 'react-native'
 import { DatePicker } from './library'
 import { PopupStub } from '@unpourtous/react-native-popup-stub'
 import moment from 'moment'
 
 type Props = {};
+const {height, width} = Dimensions.get('window')
 export default class App extends Component<Props> {
   constructor () {
     super(...arguments)
@@ -28,34 +32,85 @@ export default class App extends Component<Props> {
 
   render () {
     return (
-      <View style={styles.container}>
-        {/*<DatePicker minYear={2000} maxYear={2019} />*/}
+      <ScrollView
+        ref={(_ref) => {
+          _ref && (this.ref = _ref)
+        }}
+        style={{flex: 1}}
+        onScroll={(e) => {
+        }}
+        onScrollEndDrag={(e) => {
+          console.log(e.nativeEvent.contentOffset.y)
 
-        <Text>已选择日期：{this.state.date || ''}</Text>
-        <Button
-          style={{
-            marginTop: 8
-          }}
-          onPress={() => {
-            DatePicker.show({
-              minYear: 2000,
-              maxYear: 2019,
-              onComplete: (date) => {
-                this.setState({date: moment(date).format('YYYY-MM-DD')})
-              }
+          if (height + e.nativeEvent.contentOffset.y > 1200 && height + e.nativeEvent.contentOffset.y < 1400) {
+            this.ref.scrollTo({
+              y: e.nativeEvent.contentOffset.y - (height + e.nativeEvent.contentOffset.y - 1200),
+              animated: true
             })
-          }}
-          title="选择日期" />
-        <PopupStub ref={_ref => { if (_ref) { PopupStub.init(_ref) } }} />
-      </View>
+          } else if (height + e.nativeEvent.contentOffset.y > 1400) {
+            this.ref.scrollTo({
+              y: 1200,
+              animated: true
+            })
+          }
+        }}
+        scrollEventThrottle={16}
+        // snapToAlignment={'start'}
+        // snapToInterval={300}
+        contentContainerStyle={styles.container}>
+        <View style={{flex: 1, alignSelf: 'stretch'}}>
+          <View style={{
+            backgroundColor: 'red',
+            height: 1200,
+            alignSelf: 'stretch'
+          }}>
+          </View>
+
+          <View style={{
+            backgroundColor: 'green',
+            height: 1200,
+            alignSelf: 'stretch'
+          }}>
+            {/*</View>*/}
+            {/*<View style={{*/}
+            {/*backgroundColor: 'yellow',*/}
+            {/*height: 300,*/}
+            {/*alignSelf: 'stretch'*/}
+            {/*}}>*/}
+            {/*</View>*/}
+            {/*<View style={{*/}
+            {/*backgroundColor: 'blue',*/}
+            {/*height: 300,*/}
+            {/*alignSelf: 'stretch'*/}
+            {/*}}>*/}
+            {/*</View>*/}
+            {/*<View style={{*/}
+            {/*backgroundColor: 'green',*/}
+            {/*height: 300,*/}
+            {/*alignSelf: 'stretch'*/}
+            {/*}}>*/}
+            {/*</View>*/}
+            {/*<View style={{*/}
+            {/*backgroundColor: 'yellow',*/}
+            {/*height: 300,*/}
+            {/*alignSelf: 'stretch'*/}
+            {/*}}>*/}
+            {/*</View>*/}
+            {/*<View style={{*/}
+            {/*backgroundColor: 'blue',*/}
+            {/*height: 300,*/}
+            {/*alignSelf: 'stretch'*/}
+            {/*}}>*/}
+          </View>
+        </View>
+      </ScrollView>
     )
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
