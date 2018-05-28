@@ -15,6 +15,8 @@ import {
 import { DatePicker } from './library'
 import { PopupStub } from '@unpourtous/react-native-popup-stub'
 import moment from 'moment'
+import ViewPlaceholder from './library/skeleton/ViewPlaceholder'
+import ViewPlaceholder2 from './library/skeleton/ViewPlaceholder2'
 
 type Props = {};
 export default class App extends Component<Props> {
@@ -29,24 +31,8 @@ export default class App extends Component<Props> {
   render () {
     return (
       <View style={styles.container}>
-        {/*<DatePicker minYear={2000} maxYear={2019} />*/}
-
-        <Text>已选择日期：{this.state.date || ''}</Text>
-        <Button
-          style={{
-            marginTop: 8
-          }}
-          onPress={() => {
-            DatePicker.show({
-              minYear: 2000,
-              maxYear: 2019,
-              onComplete: (date) => {
-                this.setState({date: moment(date).format('YYYY-MM-DD')})
-              }
-            })
-          }}
-          title="选择日期" />
-        <PopupStub ref={_ref => { if (_ref) { PopupStub.init(_ref) } }} />
+        <ViewPlaceholder />
+        <ViewPlaceholder2 />
       </View>
     )
   }
@@ -57,7 +43,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#FFF',
   },
   welcome: {
     fontSize: 20,
